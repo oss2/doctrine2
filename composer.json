@@ -1,0 +1,20 @@
+{
+    "name": "oss2/doctrine2",
+    "description": "",
+    "authors": [
+        {
+            "name": "Barry O'Donovan",
+            "email": "barry@opensolutions.ie"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.1.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Oss2\\Doctrine2": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
