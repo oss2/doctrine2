@@ -1,6 +1,8 @@
 {
     "name": "oss2/doctrine2",
-    "description": "",
+    "description": "Class, traits, helpers and other tools for Doctine2",
+    "homepage": "https://github.com/oss2/doctrine2",
+    "license": "MIT",
     "authors": [
         {
             "name": "Barry O'Donovan",
@@ -9,7 +11,8 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "illuminate/support": "4.1.*"
+        "illuminate/support": "4.1.*",
+        "doctrine/orm": "2.*"
     },
     "autoload": {
         "psr-0": {
