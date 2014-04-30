@@ -92,7 +92,7 @@ trait WithPreferences
         {
             if( ( $pref->getName() == $name ) && ( $pref->getIx() === $index ) )
             {
-                if( $includeExpired || !$pref->getExpiresAt() || ( $pref->getExpiresAt() > new DateTime() ) )
+                if( $includeExpired || !$pref->getExpiresAt() || ( $pref->getExpiresAt() > new \DateTime() ) )
                     return $pref;
 
                 return false;
@@ -149,7 +149,7 @@ trait WithPreferences
      *
      * @param string $name The preference name
      * @param string $value The value to assign to the preference
-     * @param int|string|object $expires default null The expiry as a UNIX timestamp, datetime string or DateTime object. null means never.
+     * @param int|string|object $expires default null The expiry as a UNIX timestamp, \DateTime string or \DateTime object. null means never.
      * @param int $index default null If an indexed preference, set a specific index number.
      * @return \Oss2\Doctrine2\WithPreferences An instance of this object for fluid interfaces.
      */
@@ -158,9 +158,9 @@ trait WithPreferences
         $pref = $this->loadPreference( $name, $index );
 
         if( is_int( $expires ) )
-            $expires = new DateTime( date( 'Y-m-d H:i:s', $expires ) );
+            $expires = new \DateTime( date( 'Y-m-d H:i:s', $expires ) );
         elseif( is_string( $expires ) )
-            $expires = new DateTime( $expires );
+            $expires = new \DateTime( $expires );
 
         if( $pref )
         {
@@ -174,11 +174,11 @@ trait WithPreferences
         $pref = $this->_createPreferenceEntity( $this );
         $pref->setName( $name );
         $pref->setValue( $value );
-        $pref->setCreatedAt( new DateTime() );
+        $pref->setCreatedAt( new \DateTime() );
         $pref->setExpiresAt( $expires );
         $pref->setIx( $index );
 
-        D2EM::persist( $pref );
+        \D2EM::persist( $pref );
 
         return $this;
     }
@@ -302,7 +302,7 @@ trait WithPreferences
      *
      * WARNING: You need to EntityManager::flush() if the return > 0!
      *
-     * @param int|object|string $asOf default null A DateTime object or date(time) string or Unix timestamp for the expriy, null means now
+     * @param int|object|string $asOf default null A \DateTime object or date(time) string or Unix timestamp for the expriy, null means now
      * @param string $name default null Limit it to the specified attributes, null means all attributes
      * @return int The number of preferences deleted
      */
@@ -311,11 +311,11 @@ trait WithPreferences
         $count = 0;
 
         if( $asOf === null )
-            $asOf = new DateTime();
+            $asOf = new \DateTime();
         elseif( is_int( $asOf ) )
-            $asOf = new DateTime( date( 'Y-m-d H:i:s', $asOf ) );
+            $asOf = new \DateTime( date( 'Y-m-d H:i:s', $asOf ) );
         elseif( is_string( $asOf ) )
-            $asOf = new DateTime( $asOf );
+            $asOf = new \DateTime( $asOf );
 
         foreach( $this->getPreferences() as $pref )
         {
@@ -326,7 +326,7 @@ trait WithPreferences
             {
                 $count++;
                 $this->getPreferences()->removeElement( $pref );
-                D2EM::remove( $pref );
+                \D2EM::remove( $pref );
             }
         }
 
@@ -353,7 +353,7 @@ trait WithPreferences
             {
                 $count++;
                 $this->getPreferences()->removeElement( $pref );
-                D2EM::remove( $pref );
+                \D2EM::remove( $pref );
             }
         }
 
@@ -369,7 +369,7 @@ trait WithPreferences
      */
     public function expungePreferences()
     {
-        return D2EM::createQuery( 'delete \\Entities\\' . $this->_getPreferenceClassName() . ' up where up.' . $this->_getShortClassname() . ' = ?1' )
+        return \D2EM::createQuery( 'delete \\Entities\\' . $this->_getPreferenceClassName() . ' up where up.' . $this->_getShortClassname() . ' = ?1' )
                      ->setParameter( 1, $this )
                      ->execute();
     }
@@ -404,7 +404,7 @@ trait WithPreferences
         {
             if( $pref->getName() == $name )
             {
-                if( $ignoreExpired && $pref->getExpiresAt() && ( $pref->getExpiresAt() < new DateTime() ) )
+                if( $ignoreExpired && $pref->getExpiresAt() && ( $pref->getExpiresAt() < new \DateTime() ) )
                     continue;
 
                 if( $withIndex )
@@ -469,7 +469,7 @@ trait WithPreferences
             {
                 if( ( $index === null ) || ( $pref->getIx() == $index ) )
                 {
-                    if( !$ignoreExpired && $pref->getExpiresAt() && ( $pref->getExpiresAt() < new DateTime() ) )
+                    if( !$ignoreExpired && $pref->getExpiresAt() && ( $pref->getExpiresAt() < new \DateTime() ) )
                         continue;
 
                     if( strpos( $pref->getName(), '.' ) !== false )
@@ -513,7 +513,7 @@ trait WithPreferences
             if( ( strpos( $pref->getName(), $name ) === 0 ) && ( ( $index === null ) || ( $pref->getIx() == $index ) ) )
             {
                 $this->getPreferences()->removeElement( $pref );
-                D2EM::remove( $pref );
+                \D2EM::remove( $pref );
                 $count++;
             }
         }
