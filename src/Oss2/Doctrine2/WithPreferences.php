@@ -394,7 +394,7 @@ trait WithPreferences
      * @param string $name The attribute to load
      * @param boolean $withIndex default false Include index values.
      * @param boolean $ignoreExpired If set to false, include expired preferences
-     * @return boolean|array False if no such preference(s) exist, otherwise an array.
+     * @return array an empty array if no such preference(s) exist
      */
     public function getIndexedPreference( $name, $withIndex = false, $ignoreExpired = true )
     {
@@ -413,9 +413,6 @@ trait WithPreferences
                     $values[ $pref->getIx() ] = $pref->getValue();
             }
         }
-
-        if( $values === [] )
-            return false;
 
         ksort( $values, SORT_NUMERIC );
 
